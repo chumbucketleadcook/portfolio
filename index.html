@@ -33,36 +33,53 @@
       min-height: 100vh;
     }
 
+    /* ── NAV ── */
     nav {
       position: sticky; top: 0; z-index: 100;
-      background: var(--paper);
-      border-bottom: 1px solid var(--rule);
+      background: #0e0e0e;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
       padding: 0 2rem;
       display: flex; align-items: center; justify-content: space-between;
       height: 56px;
     }
-    .nav-brand { font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: var(--ink); text-decoration: none; }
+    .nav-brand { font-family: var(--mono); font-size: 13px; font-weight: 500; letter-spacing: 0.04em; color: #f8f5f0; text-decoration: none; }
     .nav-links { display: flex; gap: 2rem; list-style: none; }
-    .nav-links a { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink-muted); text-decoration: none; transition: color 0.2s; }
+    .nav-links a { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(248,245,240,0.5); text-decoration: none; transition: color 0.2s; }
     .nav-links a:hover { color: var(--accent); }
 
-    .hero { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem 4rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end; border-bottom: 1px solid var(--rule); }
+    /* ── DARK HERO ── */
+    .hero {
+      background: #0e0e0e;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-inner {
+      max-width: 1100px; margin: 0 auto; padding: 5rem 2rem 4.5rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: end;
+      position: relative; z-index: 2;
+    }
+    #node-canvas { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+    .hero-bottom-fade { position: absolute; bottom: 0; left: 0; right: 0; height: 80px; background: linear-gradient(to bottom, transparent, #0e0e0e); pointer-events: none; z-index: 3; }
+    .hero-divider { height: 3px; background: var(--accent); }
+
     .hero-eyebrow { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 1rem; }
-    .hero-name { font-family: var(--serif); font-size: clamp(3rem, 6vw, 5.5rem); line-height: 0.95; letter-spacing: -0.01em; margin-bottom: 1.5rem; }
-    .hero-name em { font-style: italic; color: var(--ink-muted); }
-    .hero-bio { font-size: 16px; color: var(--ink-muted); line-height: 1.75; max-width: 420px; margin-bottom: 2rem; }
+    .hero-name { font-family: var(--serif); font-size: clamp(3rem, 6vw, 5.5rem); line-height: 0.95; letter-spacing: -0.01em; margin-bottom: 1.5rem; color: #f8f5f0; }
+    .hero-name em { font-style: italic; color: rgba(248,245,240,0.45); }
+    .hero-bio { font-size: 16px; color: rgba(248,245,240,0.6); line-height: 1.75; max-width: 420px; margin-bottom: 2rem; }
     .hero-cta-group { display: flex; gap: 1rem; align-items: center; flex-wrap: wrap; }
     .btn { display: inline-block; padding: 10px 22px; font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; text-decoration: none; border-radius: 2px; transition: all 0.2s; }
-    .btn-primary { background: var(--ink); color: var(--paper); }
-    .btn-primary:hover { background: var(--accent); }
-    .btn-ghost { border: 1px solid var(--rule); color: var(--ink-muted); background: transparent; }
-    .btn-ghost:hover { border-color: var(--ink); color: var(--ink); }
+    .btn-primary { background: var(--accent); color: #f8f5f0; }
+    .btn-primary:hover { background: #e05535; }
+    .btn-ghost { border: 1px solid rgba(248,245,240,0.2); color: rgba(248,245,240,0.6); background: transparent; }
+    .btn-ghost:hover { border-color: rgba(248,245,240,0.5); color: #f8f5f0; }
+
     .hero-stats { display: flex; flex-direction: column; gap: 1.5rem; padding-bottom: 0.5rem; }
     .stat-item { display: flex; align-items: baseline; gap: 1rem; }
-    .stat-num { font-family: var(--serif); font-size: 2.5rem; line-height: 1; color: var(--ink); }
-    .stat-label { font-size: 13px; color: var(--ink-muted); line-height: 1.4; }
-    .stat-divider { width: 40px; height: 1px; background: var(--rule); }
+    .stat-num { font-family: var(--serif); font-size: 2.5rem; line-height: 1; color: #f8f5f0; }
+    .stat-label { font-size: 13px; color: rgba(248,245,240,0.5); line-height: 1.4; }
+    .stat-divider { width: 40px; height: 1px; background: rgba(255,255,255,0.1); }
 
+    /* ── SECTIONS ── */
     .section { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; }
     .section + .section { border-top: 1px solid var(--rule); }
     .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 2.5rem; }
@@ -71,6 +88,7 @@
     .see-all { font-family: var(--mono); font-size: 12px; font-weight: 500; letter-spacing: 0.08em; color: var(--accent); text-decoration: none; text-transform: uppercase; white-space: nowrap; }
     .see-all:hover { text-decoration: underline; }
 
+    /* ── FEATURED ── */
     .featured-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2px; background: var(--rule); }
     .featured-main { background: var(--paper); padding: 2.5rem; display: flex; flex-direction: column; justify-content: space-between; min-height: 380px; }
     .featured-sidebar { background: var(--paper); display: flex; flex-direction: column; gap: 2px; }
@@ -91,16 +109,19 @@
     .meta-dot { width: 3px; height: 3px; border-radius: 50%; background: var(--rule); }
     .side-title { font-family: var(--serif); font-size: 1.1rem; line-height: 1.3; margin-bottom: 0.5rem; }
 
+    /* ── CARD GRID ── */
     .card-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: var(--rule); }
     .article-card { background: var(--paper); padding: 2rem; display: flex; flex-direction: column; justify-content: space-between; min-height: 260px; text-decoration: none; color: inherit; transition: background 0.2s; }
     .article-card:hover { background: var(--paper-warm); }
     .card-title { font-family: var(--serif); font-size: 1.25rem; line-height: 1.3; margin-bottom: 0.75rem; }
     .card-excerpt { font-size: 14px; color: var(--ink-muted); line-height: 1.65; flex: 1; margin-bottom: 1.5rem; }
 
+    /* ── FILTER ── */
     .filter-bar { display: flex; gap: 0.5rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
     .filter-btn { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; padding: 6px 14px; border: 1px solid var(--rule); border-radius: 2px; background: transparent; color: var(--ink-muted); cursor: pointer; transition: all 0.15s; }
     .filter-btn:hover, .filter-btn.active { background: var(--ink); color: var(--paper); border-color: var(--ink); }
 
+    /* ── ABOUT ── */
     .about-strip { background: var(--ink); color: var(--paper); }
     .about-inner { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
     .about-headline { font-family: var(--serif); font-size: clamp(2rem, 4vw, 3.5rem); line-height: 1.1; color: var(--paper); }
@@ -109,6 +130,7 @@
     .about-skills { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 2rem; }
     .skill-pill { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.08em; padding: 5px 12px; border: 1px solid rgba(248,245,240,0.2); border-radius: 2px; color: rgba(248,245,240,0.6); }
 
+    /* ── NEWSLETTER ── */
     .newsletter { background: var(--paper-warm); border-top: 1px solid var(--rule); border-bottom: 1px solid var(--rule); }
     .newsletter-inner { max-width: 600px; margin: 0 auto; padding: 4rem 2rem; text-align: center; }
     .newsletter-eyebrow { font-family: var(--mono); font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.75rem; }
@@ -120,14 +142,16 @@
     .newsletter-form button { padding: 11px 22px; font-family: var(--sans); font-size: 13px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; background: var(--ink); color: var(--paper); border: none; border-radius: 2px; cursor: pointer; transition: background 0.2s; white-space: nowrap; }
     .newsletter-form button:hover { background: var(--accent); }
 
+    /* ── FOOTER ── */
     footer { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem; display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--rule); }
     .footer-brand { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); }
     .footer-links { display: flex; gap: 1.5rem; list-style: none; }
     .footer-links a { font-family: var(--mono); font-size: 12px; color: var(--ink-faint); text-decoration: none; }
     .footer-links a:hover { color: var(--accent); }
 
+    /* ── RESPONSIVE ── */
     @media (max-width: 900px) {
-      .hero { grid-template-columns: 1fr; gap: 2.5rem; }
+      .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
       .hero-stats { flex-direction: row; flex-wrap: wrap; gap: 1.5rem; }
       .featured-grid { grid-template-columns: 1fr; }
       .featured-sidebar { flex-direction: row; gap: 2px; }
@@ -137,7 +161,7 @@
     @media (max-width: 600px) {
       nav { padding: 0 1rem; }
       .nav-links { gap: 1rem; }
-      .hero { padding: 3rem 1rem 2.5rem; }
+      .hero-inner { padding: 3rem 1rem 3rem; }
       .section { padding: 3rem 1rem; }
       .card-grid { grid-template-columns: 1fr; }
       .featured-sidebar { flex-direction: column; }
@@ -151,6 +175,7 @@
 </head>
 <body>
 
+<!-- NAV -->
 <nav>
   <a href="/" class="nav-brand">richard-antoine.com</a>
   <ul class="nav-links">
@@ -161,34 +186,41 @@
   </ul>
 </nav>
 
-<section class="hero">
-  <div class="hero-text fade-in">
-    <p class="hero-eyebrow">Data Engineer · ML · Analytics</p>
-    <h1 class="hero-name">Richard<br /><em>Antoine</em></h1>
-    <p class="hero-bio">Writing about machine learning engineering, data systems, and whatever else I find interesting. 3+ years building production data pipelines at P&amp;G. M.Sc. Applied Mathematics &amp; Statistics.</p>
-    <div class="hero-cta-group">
-      <a href="#writing" class="btn btn-primary">Read the blog</a>
-      <a href="https://github.com/raantoine915" class="btn btn-ghost" target="_blank">GitHub ↗</a>
+<!-- DARK HERO -->
+<div class="hero">
+  <canvas id="node-canvas"></canvas>
+  <div class="hero-bottom-fade"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <p class="hero-eyebrow">Data Engineer · ML · Analytics</p>
+      <h1 class="hero-name">Richard<br /><em>Antoine</em></h1>
+      <p class="hero-bio">Writing about machine learning engineering, data systems, and whatever else I find interesting. 3+ years building production data pipelines at P&amp;G. M.Sc. Applied Mathematics &amp; Statistics.</p>
+      <div class="hero-cta-group">
+        <a href="#writing" class="btn btn-primary">Read the blog</a>
+        <a href="https://github.com/raantoine915" class="btn btn-ghost" target="_blank">GitHub ↗</a>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-num">3+</span>
+        <span class="stat-label">years building<br />enterprise data systems</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num">$350M+</span>
+        <span class="stat-label">business value<br />enabled via pipelines</span>
+      </div>
+      <div class="stat-divider"></div>
+      <div class="stat-item">
+        <span class="stat-num">11</span>
+        <span class="stat-label">production ML models<br />improved</span>
+      </div>
     </div>
   </div>
-  <div class="hero-stats fade-in" style="transition-delay:0.1s">
-    <div class="stat-item">
-      <span class="stat-num">3+</span>
-      <span class="stat-label">years building<br />enterprise data systems</span>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <span class="stat-num">$350M+</span>
-      <span class="stat-label">business value<br />enabled via pipelines</span>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <span class="stat-num">11</span>
-      <span class="stat-label">production ML models<br />improved</span>
-    </div>
-  </div>
-</section>
+</div>
+<div class="hero-divider"></div>
 
+<!-- FEATURED -->
 <section class="section" id="writing">
   <div class="section-header">
     <div>
@@ -229,6 +261,7 @@
   </div>
 </section>
 
+<!-- ALL ARTICLES -->
 <section class="section" id="all-articles">
   <div class="section-header">
     <div>
@@ -295,6 +328,7 @@
   </div>
 </section>
 
+<!-- PROJECTS -->
 <section class="section" id="projects">
   <div class="section-header">
     <div>
@@ -330,6 +364,7 @@
   </div>
 </section>
 
+<!-- ABOUT -->
 <div class="about-strip" id="about">
   <div class="about-inner">
     <h2 class="about-headline">Building things<br />at the intersection<br />of <em>data &amp; ML.</em></h2>
@@ -354,6 +389,7 @@
   </div>
 </div>
 
+<!-- NEWSLETTER -->
 <div class="newsletter">
   <div class="newsletter-inner fade-in">
     <p class="newsletter-eyebrow">Stay updated</p>
@@ -366,6 +402,7 @@
   </div>
 </div>
 
+<!-- FOOTER -->
 <footer>
   <span class="footer-brand">© 2026 Richard Antoine</span>
   <ul class="footer-links">
@@ -376,11 +413,13 @@
 </footer>
 
 <script>
+  // Scroll fade-in
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
   }, { threshold: 0.08 });
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
 
+  // Category filter
   function filterArticles(cat, btn) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -388,6 +427,80 @@
       card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'flex' : 'none';
     });
   }
+
+  // Node graph
+  const canvas = document.getElementById('node-canvas');
+  const ctx = canvas.getContext('2d');
+  const hero = canvas.parentElement;
+
+  const NODE_COUNT = 70;
+  const CONNECTION_DIST = 120;
+  const SPEED = 0.4;
+  const NODE_RGB = '210, 100, 65';
+  const EDGE_RGB = '200, 75, 47';
+
+  let nodes = [], W, H;
+
+  function resize() {
+    W = hero.offsetWidth;
+    H = hero.offsetHeight;
+    canvas.width = W;
+    canvas.height = H;
+  }
+
+  function initNodes() {
+    nodes = [];
+    for (let i = 0; i < NODE_COUNT; i++) {
+      nodes.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * SPEED,
+        vy: (Math.random() - 0.5) * SPEED,
+        r: Math.random() * 1.8 + 1.0,
+        opacity: Math.random() * 0.35 + 0.2
+      });
+    }
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const dist = Math.sqrt(dx * dx + dy * dy);
+        if (dist < CONNECTION_DIST) {
+          const opacity = (1 - dist / CONNECTION_DIST) * 0.28;
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+          ctx.strokeStyle = `rgba(${EDGE_RGB}, ${opacity})`;
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
+        }
+      }
+    }
+    for (const n of nodes) {
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(${NODE_RGB}, ${n.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  function update() {
+    for (const n of nodes) {
+      n.x += n.vx; n.y += n.vy;
+      if (n.x < 0 || n.x > W) n.vx *= -1;
+      if (n.y < 0 || n.y > H) n.vy *= -1;
+    }
+  }
+
+  function loop() { update(); draw(); requestAnimationFrame(loop); }
+
+  resize(); initNodes(); loop();
+  window.addEventListener('resize', () => { resize(); initNodes(); });
 </script>
+
 </body>
 </html>
