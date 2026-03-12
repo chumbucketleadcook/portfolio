@@ -1,3 +1,9 @@
+---
+layout: post
+title: "How to Deploy a Large Language Model from Hugging Face to AWS: Part 3 — API Gateway Setup"
+date: 2025-10-01
+category: ml
+---
 # 📌 Part 3: Creating an HTTP API in AWS API Gateway to Access Lambda (with Screenshot Guides)
 
 ## 1. Create an HTTP API via API Gateway

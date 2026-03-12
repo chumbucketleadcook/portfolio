@@ -1,3 +1,9 @@
+---
+layout: post
+title: "How to Deploy a Large Language Model from Hugging Face to AWS: Part 1 — SageMaker"
+date: 2025-10-01
+category: ml
+---
 # 📌 Part 1: Deploying a Hugging Face Model to SageMaker Endpoint (with Screenshot Guides)
 
 ## 1. Create an IAM Execution Role

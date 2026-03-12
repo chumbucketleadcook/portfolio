@@ -1,3 +1,9 @@
+---
+layout: post
+title: "How to Deploy a Large Language Model from Hugging Face to AWS: Part 2 — Lambda Function Setup"
+date: 2025-10-01
+category: ml
+---
 # 📌 Part 2: Creating AWS Lambda Function and Role for SageMaker Endpoint Invocation (with Screenshot Guides)
 
 ## 1. Create IAM Role for Lambda
