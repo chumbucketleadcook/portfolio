@@ -230,25 +230,26 @@
     <a href="#all-articles" class="see-all">All articles →</a>
   </div>
   <div class="featured-grid fade-in">
+    <!-- NEW: KNN article is now the featured main -->
     <div class="featured-main">
       <div>
-        <span class="article-tag tag-ml">Machine Learning</span>
+        <span class="article-tag tag-project">Project</span>
         <h3 class="featured-main-title">
-          <a href="/part1_sagemaker_deployment_guide/">How to Deploy a Large Language Model from Hugging Face to AWS: Part 1 — SageMaker</a>
+          <a href="/CareerPulse_Category_Imputation_KNN/">CareerPulse: Job Category Imputation Using KNN</a>
         </h3>
-        <p class="article-excerpt">A hands-on walkthrough of deploying a 738M parameter model to a SageMaker GPU endpoint — covering instance selection, model configuration, and the IAM setup that will silently ruin your day if you get it wrong.</p>
+        <p class="article-excerpt">How to handle NULL job categories in a medallion lakehouse pipeline — building a KNN classifier on TF-IDF text features to impute missing labels and keep the downstream time series gap-free.</p>
       </div>
       <div class="article-meta">
-        <span>Oct 2025</span><span class="meta-dot"></span><span>8 min read</span><span class="meta-dot"></span><span>Series · 3 parts</span>
+        <span>Mar 2026</span><span class="meta-dot"></span><span>6 min read</span><span class="meta-dot"></span><span>CareerPulse · Pipeline Docs</span>
       </div>
     </div>
     <div class="featured-sidebar">
-      <a href="/part2_lambda_setup_guide/" class="featured-side-item">
+      <a href="/part1_sagemaker_deployment_guide/" class="featured-side-item">
         <div>
           <span class="article-tag tag-ml">Machine Learning</span>
-          <p class="side-title">Part 2: Setting Up a Lambda Function for Serverless Inference</p>
+          <p class="side-title">How to Deploy an LLM from Hugging Face to AWS: Part 1 — SageMaker</p>
         </div>
-        <div class="article-meta"><span>Oct 2025</span><span class="meta-dot"></span><span>6 min read</span></div>
+        <div class="article-meta"><span>Oct 2025</span><span class="meta-dot"></span><span>8 min read</span><span class="meta-dot"></span><span>Series · 3 parts</span></div>
       </a>
       <a href="/part3_api_gateway_setup_guide/" class="featured-side-item">
         <div>
@@ -277,7 +278,16 @@
     <button class="filter-btn" onclick="filterArticles('general', this)">General</button>
   </div>
   <div class="card-grid" id="article-grid">
-    <a href="/part1_sagemaker_deployment_guide/" class="article-card fade-in" data-cat="ml">
+    <!-- NEW: KNN article first (most recent) -->
+    <a href="/CareerPulse_Category_Imputation_KNN/" class="article-card fade-in" data-cat="project">
+      <div>
+        <span class="article-tag tag-project">Projects</span>
+        <h3 class="card-title">CareerPulse: Job Category Imputation Using KNN</h3>
+        <p class="card-excerpt">Imputing NULL job categories with a TF-IDF + KNN classifier — keeping the medallion pipeline's daily time series complete and forecast-ready.</p>
+      </div>
+      <div class="article-meta"><span>Mar 2026</span><span class="meta-dot"></span><span>6 min</span></div>
+    </a>
+    <a href="/part1_sagemaker_deployment_guide/" class="article-card fade-in" data-cat="ml" style="transition-delay:0.05s">
       <div>
         <span class="article-tag tag-ml">ML &amp; AI</span>
         <h3 class="card-title">Deploying an LLM to SageMaker: What the Docs Don't Tell You</h3>
@@ -285,7 +295,7 @@
       </div>
       <div class="article-meta"><span>Oct 2025</span><span class="meta-dot"></span><span>8 min</span></div>
     </a>
-    <a href="/part2_lambda_setup_guide/" class="article-card fade-in" data-cat="ml" style="transition-delay:0.05s">
+    <a href="/part2_lambda_setup_guide/" class="article-card fade-in" data-cat="ml" style="transition-delay:0.1s">
       <div>
         <span class="article-tag tag-ml">ML &amp; AI</span>
         <h3 class="card-title">Serverless Inference with Lambda: Wiring It to SageMaker</h3>
@@ -293,7 +303,7 @@
       </div>
       <div class="article-meta"><span>Oct 2025</span><span class="meta-dot"></span><span>6 min</span></div>
     </a>
-    <a href="/part3_api_gateway_setup_guide/" class="article-card fade-in" data-cat="ml" style="transition-delay:0.1s">
+    <a href="/part3_api_gateway_setup_guide/" class="article-card fade-in" data-cat="ml" style="transition-delay:0.15s">
       <div>
         <span class="article-tag tag-ml">ML &amp; AI</span>
         <h3 class="card-title">API Gateway: Turning Your Lambda Into a Public Endpoint</h3>
@@ -301,19 +311,11 @@
       </div>
       <div class="article-meta"><span>Oct 2025</span><span class="meta-dot"></span><span>5 min</span></div>
     </a>
-    <a href="#" class="article-card fade-in" data-cat="data" style="transition-delay:0.15s; opacity:0.45; pointer-events:none;">
+    <a href="#" class="article-card fade-in" data-cat="data" style="transition-delay:0.2s; opacity:0.45; pointer-events:none;">
       <div>
         <span class="article-tag tag-data">Data Engineering</span>
         <h3 class="card-title">Coming soon</h3>
         <p class="card-excerpt">More articles on Databricks, Delta Lake, medallion architecture, and production pipeline design.</p>
-      </div>
-      <div class="article-meta"><span>Coming soon</span></div>
-    </a>
-    <a href="#" class="article-card fade-in" data-cat="project" style="transition-delay:0.2s; opacity:0.45; pointer-events:none;">
-      <div>
-        <span class="article-tag tag-project">Projects</span>
-        <h3 class="card-title">Coming soon</h3>
-        <p class="card-excerpt">Deep dives into CareerPulse and other personal projects — architecture decisions, failures, and what I learned.</p>
       </div>
       <div class="article-meta"><span>Coming soon</span></div>
     </a>
@@ -337,7 +339,7 @@
     </div>
   </div>
   <div class="card-grid">
-    <a href="#" class="article-card fade-in">
+    <a href="/CareerPulse_Category_Imputation_KNN/" class="article-card fade-in">
       <div>
         <span class="article-tag tag-project">Project</span>
         <h3 class="card-title">CareerPulse</h3>
