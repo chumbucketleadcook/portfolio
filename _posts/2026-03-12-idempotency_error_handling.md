@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Designing for Failure: Idempotency and Error Handling in PySpark Pipelines"
-date: 2026-04-15
+date: 2026-03-12
 category: data
 ---
 # Designing for Failure: Idempotency and Error Handling in PySpark Pipelines

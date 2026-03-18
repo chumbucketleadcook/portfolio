@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "Building a RAG Application with LangChain: Query Your Own Knowledge Base"
-date: 2026-05-15
+date: 2026-03-15
 category: ml
 ---
 # Building a RAG Application with LangChain: Query Your Own Knowledge Base
