@@ -3,7 +3,6 @@ layout: post
 title: "From Prompt to Response in Under a Second: Optimizing a Serverless LLM Inference Pipeline"
 date: 2026-05-01
 category: ml
-permalink: /llm-inference-optimization/
 ---
 # From Prompt to Response in Under a Second: Optimizing a Serverless LLM Inference Pipeline
 

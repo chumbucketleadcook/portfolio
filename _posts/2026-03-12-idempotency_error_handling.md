@@ -3,7 +3,6 @@ layout: post
 title: "Designing for Failure: Idempotency and Error Handling in PySpark Pipelines"
 date: 2026-04-15
 category: data
-permalink: /idempotency-error-handling/
 ---
 # Designing for Failure: Idempotency and Error Handling in PySpark Pipelines
 
