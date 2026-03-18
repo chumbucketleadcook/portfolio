@@ -3,6 +3,7 @@ layout: post
 title: "Monitoring ML Models in Production: Detecting Data Drift Before It Breaks Your Pipeline"
 date: 2026-04-01
 category: ml
+permalink: /monitoring-model-drift/
 ---
 # Monitoring ML Models in Production: Detecting Data Drift Before It Breaks Your Pipeline
 
