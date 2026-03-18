@@ -230,33 +230,33 @@
     <a href="#all-articles" class="see-all">All articles →</a>
   </div>
   <div class="featured-grid fade-in">
-    <!-- NEW: KNN article is now the featured main -->
+    <!-- Featured main: most recent substantial post -->
     <div class="featured-main">
       <div>
-        <span class="article-tag tag-project">Project</span>
+        <span class="article-tag tag-ml">Machine Learning</span>
         <h3 class="featured-main-title">
-          <a href="/CareerPulse_Category_Imputation_KNN/">CareerPulse: Job Category Imputation Using KNN</a>
+          <a href="/llm-inference-optimization/">From Prompt to Response in Under a Second: Optimizing a Serverless LLM Inference Pipeline</a>
         </h3>
-        <p class="article-excerpt">How to handle NULL job categories in a medallion lakehouse pipeline — building a KNN classifier on TF-IDF text features to impute missing labels and keep the downstream time series gap-free.</p>
+        <p class="article-excerpt">Cold starts, payload constraints, autoscaling, and throttling — a benchmark-driven walkthrough of every optimization applied to a SageMaker + Lambda + API Gateway inference stack, with before/after numbers at each layer.</p>
       </div>
       <div class="article-meta">
-        <span>Mar 2026</span><span class="meta-dot"></span><span>6 min read</span><span class="meta-dot"></span><span>CareerPulse · Pipeline Docs</span>
+        <span>Mar 2026</span><span class="meta-dot"></span><span>10 min read</span><span class="meta-dot"></span><span>MLOps Series</span>
       </div>
     </div>
     <div class="featured-sidebar">
-      <a href="/part1_sagemaker_deployment_guide/" class="featured-side-item">
+      <a href="/rag-langchain/" class="featured-side-item">
         <div>
           <span class="article-tag tag-ml">Machine Learning</span>
-          <p class="side-title">How to Deploy an LLM from Hugging Face to AWS: Part 1 — SageMaker</p>
+          <p class="side-title">Building a RAG Application with LangChain: Query Your Own Knowledge Base</p>
         </div>
-        <div class="article-meta"><span>Oct 2025</span><span class="meta-dot"></span><span>8 min read</span><span class="meta-dot"></span><span>Series · 3 parts</span></div>
+        <div class="article-meta"><span>Mar 2026</span><span class="meta-dot"></span><span>9 min read</span></div>
       </a>
-      <a href="/part3_api_gateway_setup_guide/" class="featured-side-item">
+      <a href="/monitoring-model-drift/" class="featured-side-item">
         <div>
           <span class="article-tag tag-ml">Machine Learning</span>
-          <p class="side-title">Part 3: API Gateway Setup — Exposing Your Model as a Public REST API</p>
+          <p class="side-title">Monitoring ML Models in Production: Detecting Data Drift Before It Breaks Your Pipeline</p>
         </div>
-        <div class="article-meta"><span>Oct 2025</span><span class="meta-dot"></span><span>5 min read</span></div>
+        <div class="article-meta"><span>Mar 2026</span><span class="meta-dot"></span><span>8 min read</span></div>
       </a>
     </div>
   </div>
@@ -278,40 +278,89 @@
     <button class="filter-btn" onclick="filterArticles('general', this)">General</button>
   </div>
   <div class="card-grid" id="article-grid">
-    <!-- NEW: KNN article first (most recent) -->
-    <a href="/CareerPulse_Category_Imputation_KNN/" class="article-card fade-in" data-cat="project">
+
+    <!-- LLM Inference Optimization -->
+    <a href="/llm-inference-optimization/" class="article-card fade-in" data-cat="ml">
+      <div>
+        <span class="article-tag tag-ml">ML &amp; AI</span>
+        <h3 class="card-title">From Prompt to Response in Under a Second: Optimizing a Serverless LLM Inference Pipeline</h3>
+        <p class="card-excerpt">Benchmarking and tuning every layer of a SageMaker + Lambda + API Gateway stack — cold starts, autoscaling, output constraints, and throttling.</p>
+      </div>
+      <div class="article-meta"><span>Mar 2026</span><span class="meta-dot"></span><span>10 min</span></div>
+    </a>
+
+    <!-- RAG with LangChain -->
+    <a href="/rag-langchain/" class="article-card fade-in" data-cat="ml" style="transition-delay:0.05s">
+      <div>
+        <span class="article-tag tag-ml">ML &amp; AI</span>
+        <h3 class="card-title">Building a RAG Application with LangChain: Query Your Own Knowledge Base</h3>
+        <p class="card-excerpt">End-to-end walkthrough of a retrieval-augmented generation system — document loading, text splitting, vector embeddings, Chroma, and a RetrievalQA chain.</p>
+      </div>
+      <div class="article-meta"><span>Mar 2026</span><span class="meta-dot"></span><span>9 min</span></div>
+    </a>
+
+    <!-- CareerPulse KNN -->
+    <a href="/CareerPulse-Category-Imputation-KNN/" class="article-card fade-in" data-cat="project" style="transition-delay:0.1s">
       <div>
         <span class="article-tag tag-project">Projects</span>
         <h3 class="card-title">CareerPulse: Job Category Imputation Using KNN</h3>
-        <p class="card-excerpt">Imputing NULL job categories with a TF-IDF + KNN classifier — keeping the medallion pipeline's daily time series complete and forecast-ready.</p>
+        <p class="card-excerpt">How I handled missing category labels in the CareerPulse pipeline using TF-IDF vectorization and a KNN classifier — training, evaluation, and MLflow integration.</p>
       </div>
-      <div class="article-meta"><span>Mar 2026</span><span class="meta-dot"></span><span>6 min</span></div>
+      <div class="article-meta"><span>Mar 2026</span><span class="meta-dot"></span><span>7 min</span></div>
     </a>
-    <a href="/part1_sagemaker_deployment_guide/" class="article-card fade-in" data-cat="ml" style="transition-delay:0.05s">
+
+    <!-- Monitoring / Drift -->
+    <a href="/monitoring-model-drift/" class="article-card fade-in" data-cat="ml" style="transition-delay:0.15s">
+      <div>
+        <span class="article-tag tag-ml">ML &amp; AI</span>
+        <h3 class="card-title">Monitoring ML Models in Production: Detecting Data Drift Before It Breaks Your Pipeline</h3>
+        <p class="card-excerpt">PSI, KS tests, and a Databricks monitoring notebook that fires before accuracy degrades — because retraining schedules alone aren't enough.</p>
+      </div>
+      <div class="article-meta"><span>Mar 2026</span><span class="meta-dot"></span><span>8 min</span></div>
+    </a>
+
+    <!-- Idempotency / Error Handling -->
+    <a href="/idempotency-error-handling/" class="article-card fade-in" data-cat="data" style="transition-delay:0.2s">
+      <div>
+        <span class="article-tag tag-data">Data Engineering</span>
+        <h3 class="card-title">Designing for Failure: Idempotency and Error Handling in PySpark Pipelines</h3>
+        <p class="card-excerpt">Delta Lake MERGE, quarantine paths for bad records, checkpoint-based recovery, schema evolution, and structured logging — what production pipelines actually need.</p>
+      </div>
+      <div class="article-meta"><span>Mar 2026</span><span class="meta-dot"></span><span>9 min</span></div>
+    </a>
+
+    <!-- Part 1: SageMaker -->
+    <a href="/part1_sagemaker_deployment_guide/" class="article-card fade-in" data-cat="ml" style="transition-delay:0.25s">
       <div>
         <span class="article-tag tag-ml">ML &amp; AI</span>
         <h3 class="card-title">Deploying an LLM to SageMaker: What the Docs Don't Tell You</h3>
         <p class="card-excerpt">Instance types, memory limits, cold start behavior — the gaps in AWS docs that cost me hours.</p>
       </div>
-      <div class="article-meta"><span>Oct 2025</span><span class="meta-dot"></span><span>8 min</span></div>
+      <div class="article-meta"><span>Oct 2025</span><span class="meta-dot"></span><span>8 min</span><span class="meta-dot"></span><span>Part 1 of 3</span></div>
     </a>
-    <a href="/part2_lambda_setup_guide/" class="article-card fade-in" data-cat="ml" style="transition-delay:0.1s">
+
+    <!-- Part 2: Lambda -->
+    <a href="/part2_lambda_setup_guide/" class="article-card fade-in" data-cat="ml" style="transition-delay:0.3s">
       <div>
         <span class="article-tag tag-ml">ML &amp; AI</span>
         <h3 class="card-title">Serverless Inference with Lambda: Wiring It to SageMaker</h3>
         <p class="card-excerpt">How to connect a Lambda function to a SageMaker endpoint with least-privilege IAM and actually handle timeouts.</p>
       </div>
-      <div class="article-meta"><span>Oct 2025</span><span class="meta-dot"></span><span>6 min</span></div>
+      <div class="article-meta"><span>Oct 2025</span><span class="meta-dot"></span><span>6 min</span><span class="meta-dot"></span><span>Part 2 of 3</span></div>
     </a>
-    <a href="/part3_api_gateway_setup_guide/" class="article-card fade-in" data-cat="ml" style="transition-delay:0.15s">
+
+    <!-- Part 3: API Gateway -->
+    <a href="/part3_api_gateway_setup_guide/" class="article-card fade-in" data-cat="ml" style="transition-delay:0.35s">
       <div>
         <span class="article-tag tag-ml">ML &amp; AI</span>
         <h3 class="card-title">API Gateway: Turning Your Lambda Into a Public Endpoint</h3>
         <p class="card-excerpt">CORS, throttling, and API keys — finishing the serverless MLOps pipeline so the outside world can hit your model.</p>
       </div>
-      <div class="article-meta"><span>Oct 2025</span><span class="meta-dot"></span><span>5 min</span></div>
+      <div class="article-meta"><span>Oct 2025</span><span class="meta-dot"></span><span>5 min</span><span class="meta-dot"></span><span>Part 3 of 3</span></div>
     </a>
-    <a href="#" class="article-card fade-in" data-cat="data" style="transition-delay:0.2s; opacity:0.45; pointer-events:none;">
+
+    <!-- Coming soon placeholders -->
+    <a href="#" class="article-card fade-in" data-cat="data" style="transition-delay:0.4s; opacity:0.45; pointer-events:none;">
       <div>
         <span class="article-tag tag-data">Data Engineering</span>
         <h3 class="card-title">Coming soon</h3>
@@ -319,7 +368,17 @@
       </div>
       <div class="article-meta"><span>Coming soon</span></div>
     </a>
-    <a href="#" class="article-card fade-in" data-cat="general" style="transition-delay:0.25s; opacity:0.45; pointer-events:none;">
+
+    <a href="#" class="article-card fade-in" data-cat="project" style="transition-delay:0.45s; opacity:0.45; pointer-events:none;">
+      <div>
+        <span class="article-tag tag-project">Projects</span>
+        <h3 class="card-title">Coming soon</h3>
+        <p class="card-excerpt">The CareerPulse end-to-end deep dive — architecture decisions, failures, and what I learned.</p>
+      </div>
+      <div class="article-meta"><span>Coming soon</span></div>
+    </a>
+
+    <a href="#" class="article-card fade-in" data-cat="general" style="transition-delay:0.5s; opacity:0.45; pointer-events:none;">
       <div>
         <span class="article-tag tag-general">General</span>
         <h3 class="card-title">Coming soon</h3>
@@ -327,6 +386,7 @@
       </div>
       <div class="article-meta"><span>Coming soon</span></div>
     </a>
+
   </div>
 </section>
 
@@ -339,7 +399,7 @@
     </div>
   </div>
   <div class="card-grid">
-    <a href="/CareerPulse_Category_Imputation_KNN/" class="article-card fade-in">
+    <a href="#" class="article-card fade-in">
       <div>
         <span class="article-tag tag-project">Project</span>
         <h3 class="card-title">CareerPulse</h3>
@@ -351,7 +411,7 @@
       <div>
         <span class="article-tag tag-ml">ML &amp; AI</span>
         <h3 class="card-title">LLM Inference API</h3>
-        <p class="card-excerpt">Deployed a 738M parameter model to SageMaker and built a fully serverless inference pipeline via Lambda and API Gateway.</p>
+        <p class="card-excerpt">Deployed a 738M parameter model to SageMaker and built a fully serverless inference pipeline via Lambda and API Gateway — optimized to sub-second warm latency.</p>
       </div>
       <div class="article-meta"><span>AWS · SageMaker · Lambda · HuggingFace</span></div>
     </a>
