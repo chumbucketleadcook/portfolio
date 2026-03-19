@@ -1,0 +1,49 @@
+# =======================
+# Jekyll Build Output
+# =======================
+_site/
+.jekyll-cache/
+.jekyll-metadata
+
+# =======================
+# Ruby / Bundler
+# =======================
+.bundle/
+vendor/
+Gemfile.lock
+
+# =======================
+# Windows
+# =======================
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# =======================
+# VS Code
+# =======================
+.vscode/
+*.code-workspace
+
+# =======================
+# Sass Cache
+# =======================
+.sass-cache/
+*.css.map
+
+# =======================
+# Logs & Temp Files
+# =======================
+*.log
+*.tmp
+*.temp
+npm-debug.log*
+
+# =======================
+# OS-generated
+# =======================
+.DS_Store
