@@ -4,34 +4,30 @@ title: "How to Deploy a Large Language Model from Hugging Face to AWS: Part 2 �
 date: 2025-10-01
 category: ml
 ---
-# 📌 Part 2: Creating AWS Lambda Function and Role for SageMaker Endpoint Invocation (with Screenshot Guides)
 
-## 1. Create IAM Role for Lambda
+# Connecting a Lambda Function to Your SageMaker Endpoint
 
-**Purpose**: This role allows the Lambda function to invoke the SageMaker endpoint.
+This is Part 2 of a three-part series. In [Part 1](/part1_sagemaker_deployment_guide/) we deployed a Hugging Face LLM to a SageMaker endpoint. Here, we'll wire a Lambda function to that endpoint so inference requests can be handled serverlessly — no persistent compute, no idle costs.
 
-### Steps:
-
-- Go to the **AWS Console** → **IAM** → **Roles** → **Create Role**.
-- **Trusted Entity Type**: Choose **AWS Service**.
-- **Use Case**: Select **Lambda**.
-- Click **Next** to **Permissions** step.
-
-✅ **Screenshot Tip**:\
-
-
-✅ Screenshot the **Create role page** → **Select Lambda as trusted entity**
+**Before starting:** Have the SageMaker endpoint ARN from Part 1 ready. You'll paste it into an IAM policy below.
 
 ---
 
-## 2. Attach SageMaker Invoke Permission Policy
+## Step 1: Create an IAM Role for Lambda
 
-**Purpose**: Grant the Lambda function permission to invoke the SageMaker endpoint.
+Lambda needs a role that grants it permission to call your SageMaker endpoint. Start by creating a role scoped to the Lambda service.
 
-### Steps:
+Go to **IAM → Roles → Create role**. Set the trusted entity to **AWS Service** and select **Lambda** as the use case, then click **Next**.
 
-- **In the same role creation process**, click **Create policy** to open a new tab.
-- Switch to the **JSON** tab and paste the following policy:
+Don't attach any permissions yet — you'll create a custom policy in the next step and attach it before finalising the role.
+
+---
+
+## Step 2: Create and Attach a SageMaker Invoke Policy
+
+Rather than granting broad SageMaker access, the Lambda role should only be permitted to invoke your specific endpoint. This follows least-privilege best practice and limits the blast radius if the role is ever misused.
+
+On the permissions screen, click **Create policy** (this opens a new tab). Switch to the **JSON** editor and paste the following, replacing the `Resource` ARN with the one you saved from Part 1:
 
 ```json
 {
@@ -39,71 +35,44 @@ category: ml
     "Statement": [
         {
             "Effect": "Allow",
-            "Action": [
-                "sagemaker:InvokeEndpoint"
-            ],
-            "Resource": [
-                "arn:aws:sagemaker:us-east-2:YOUR_ACCOUNT_ID:endpoint/lamini-t5-gpu-endpoint"
-            ]
+            "Action": ["sagemaker:InvokeEndpoint"],
+            "Resource": ["arn:aws:sagemaker:us-east-2:YOUR_ACCOUNT_ID:endpoint/lamini-t5-gpu-endpoint"]
         }
     ]
 }
 ```
 
-> ✅ **Note**: Replace the `Resource` value with the **endpoint ARN** you obtained in Part 1.
+Name the policy `SageMakerInvokePolicy` and create it. Return to the role creation tab, refresh the policy list, attach `SageMakerInvokePolicy`, and complete role creation with the name `generate-text-lamini-role`.
 
-- Click **Next**, give it a name like `SageMakerInvokePolicy`, and click **Create Policy**.
-- Go back to the role creation tab, **refresh** and **attach** the newly created policy.
-
-✅ **Screenshot Tip**:\
-
-
-✅ Screenshot the **JSON policy creation step** showing the custom policy\
-
-
-✅ Screenshot the **attached policies** before creating the role
-
-- Name the role `generate-text-lamini-role` and create it.
-- After creation, click on the role and copy the **Role ARN** — you will need this when setting up Lambda.
-
-✅ **Screenshot Tip**:\
-
-
-✅ Screenshot the **Role ARN** after creation
+Once the role is created, open it and copy the **Role ARN** — you'll need it in the next step.
 
 ---
 
-## 3. Create AWS Lambda Function
+## Step 3: Create the Lambda Function
 
-**Purpose**: Lambda serves as the backend to accept requests and forward them to the SageMaker endpoint.
+Go to **Lambda → Create function** and configure it as follows:
 
-### Steps:
+| Setting | Value |
+|---|---|
+| Author from scratch | — |
+| Function name | `generate-text-lamini` |
+| Runtime | Python 3.10 |
+| Execution role | Use an existing role → `generate-text-lamini-role` |
 
-- Go to **AWS Console** → **Lambda** → **Create function**.
-- **Author from scratch**:
-  - Function name: `generate-text-lamini`
-  - Runtime: `Python 3.10`
-  - **Execution Role**: Choose **Use an existing role** → Select `generate-text-lamini-role`.
-- Click **Create Function**.
-
-✅ **Screenshot Tip**:\
-
-
-✅ Screenshot the **Create Lambda Function screen** showing name, runtime, and role
+Click **Create function**.
 
 ---
 
-## 4. Lambda Function Code
+## Step 4: Add the Function Code
 
-In the **Function code** section of your Lambda function, replace the default code with the following:
+In the **Code** tab, replace the default handler with the following:
 
 ```python
 import boto3
 import json
 
 client = boto3.client('sagemaker-runtime')
-
-ENDPOINT_NAME = 'lamini-t5-gpu-endpoint'  # Name of your SageMaker endpoint
+ENDPOINT_NAME = 'lamini-t5-gpu-endpoint'
 
 
 def lambda_handler(event, context):
@@ -128,6 +97,7 @@ def lambda_handler(event, context):
             'statusCode': 200,
             'body': json.dumps(result)
         }
+
     except Exception as e:
         return {
             'statusCode': 500,
@@ -135,26 +105,26 @@ def lambda_handler(event, context):
         }
 ```
 
-✅ **Screenshot Tip**:\
+The handler expects a JSON event with a `prompt` key, forwards it to the SageMaker endpoint as the `inputs` field, and returns the model's response. Missing prompts return a `400` rather than letting the request fail silently downstream.
 
-
-✅ Screenshot the **Function code editor** with the pasted code
-
-- Click **Deploy** to save your Lambda function.
-
-✅ **Screenshot Tip**:\
-
-
-✅ Screenshot after clicking **Deploy**
+Click **Deploy** to save the function.
 
 ---
 
-✅ **Summary Checklist**:
+## Step 5: Set the Timeout
 
-- ✅ Created IAM role for Lambda with SageMaker invoke permissions.
-- ✅ Created Lambda function using the correct IAM role.
-- ✅ Configured Lambda function code to forward prompts to the SageMaker endpoint.
-- ✅ Deployed Lambda function and saved Lambda ARN for API Gateway setup (Part 3).
+Lambda's default timeout is 3 seconds — far too short for LLM inference, which can easily take 10–30 seconds depending on prompt length and instance warmup. Go to **Configuration → General configuration → Edit** and raise the timeout to at least **60 seconds**.
 
-✅ **Next Step**: Proceed to Part 3 to configure API Gateway and expose the Lambda function via a public HTTP endpoint.
+While you're there, confirm the memory allocation. The default 128 MB is fine here since the heavy computation happens on the SageMaker instance, not in Lambda.
 
+---
+
+## Summary
+
+At this point you have:
+
+- A least-privilege IAM role allowing Lambda to invoke only your specific SageMaker endpoint
+- A deployed Lambda function that accepts a `prompt`, calls the endpoint, and returns the model's output
+- A timeout configuration that won't cut off inference mid-generation
+
+**Next:** [Part 3 — API Gateway Setup: Exposing Your Lambda as a Public HTTP Endpoint](/part3_api_gateway_setup_guide/)

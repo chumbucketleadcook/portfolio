@@ -4,53 +4,49 @@ title: "How to Deploy a Large Language Model from Hugging Face to AWS: Part 1 �
 date: 2025-10-01
 category: ml
 ---
-# 📌 Part 1: Deploying a Hugging Face Model to SageMaker Endpoint (with Screenshot Guides)
 
-## 1. Create an IAM Execution Role
+# Deploying a Hugging Face LLM to a SageMaker Endpoint
 
-**Purpose**: This role allows SageMaker to access your AWS resources (like ECR, S3, and other services).
+This is Part 1 of a three-part series on building a fully serverless LLM inference pipeline on AWS. By the end of this post, you'll have a live SageMaker endpoint serving a Hugging Face model — ready for the Lambda and API Gateway layers covered in Parts 2 and 3.
 
-### Steps:
-
-- Go to the **AWS Console** → **IAM** → **Roles** → **Create role**.
-- **Trusted Entity**: Choose **SageMaker**.
-- **Permissions policies**: Attach the following managed policies:
-  - `AmazonSageMakerFullAccess`
-  - `AmazonS3FullAccess`
-- **Role Name**: Name it something like `SageMakerExecutionRole`.
-- After creation, click on the role and copy the **Role ARN** — you'll need this when deploying the model.
-
-**📷 Screenshot Tip**:\
-✅ Screenshot the **Create role page** → **Select trusted entity as SageMaker**\
-✅ Screenshot the **Attach permissions policies** step showing both attached policies\
-✅ Screenshot the **Role ARN** after creation
+**What you'll need:** An AWS account with permission to create IAM roles, SageMaker resources, and billing enabled for GPU instances.
 
 ---
 
-## 2. Launch a SageMaker Notebook Instance
+## Step 1: Create an IAM Execution Role
 
-**Purpose**: This notebook instance will be used to run Python code to deploy your model.
+SageMaker needs an execution role to access AWS resources on your behalf — S3 for model artifacts, ECR for container images, and so on.
 
-### Steps:
+Navigate to **IAM → Roles → Create role**. Set the trusted entity to **SageMaker**, then attach two managed policies:
 
-- Go to **SageMaker** → **Notebook instances** → **Create notebook instance**.
-- Name: `huggingface-llm-instance`.
-- Instance type: `ml.t3.medium` (or larger if needed).
-- **IAM Role**: Choose the `SageMakerExecutionRole` you created.
-- **Git repositories**: Skip this.
-- Click **Create notebook instance**.
+- `AmazonSageMakerFullAccess`
+- `AmazonS3FullAccess`
 
-**📷 Screenshot Tip**:\
-✅ Screenshot the **Create notebook instance** screen showing the name and instance type\
-✅ Screenshot the **IAM role** selection
+Name the role `SageMakerExecutionRole` and create it. Once created, open the role and copy the **Role ARN** — you'll paste it into the deployment script in Step 5.
 
 ---
 
-## 3. Add `requirements.txt` to Your Notebook Instance
+## Step 2: Launch a SageMaker Notebook Instance
 
-**Purpose**: To ensure consistent environments, install all necessary Python dependencies at once.
+The notebook instance is where you'll run the Python deployment code.
 
-### Example `requirements.txt`:
+Go to **SageMaker → Notebook instances → Create notebook instance** and configure it as follows:
+
+| Setting | Value |
+|---|---|
+| Name | `huggingface-llm-instance` |
+| Instance type | `ml.t3.medium` |
+| IAM role | `SageMakerExecutionRole` |
+
+`ml.t3.medium` is sufficient for running deployment scripts. The actual model inference will run on a separate GPU endpoint, not this notebook instance.
+
+Click **Create notebook instance** and wait for the status to show **InService**, then open it via **JupyterLab**.
+
+---
+
+## Step 3: Install Dependencies
+
+Inside JupyterLab, create a `requirements.txt` file with the following contents and run the install command in a notebook cell:
 
 ```plaintext
 transformers==4.53.2
@@ -61,56 +57,29 @@ sagemaker==2.219.0
 boto3==1.34.112
 ```
 
-### Upload Instructions:
-
-- Open your notebook instance via **JupyterLab**.
-- Drag and drop the `requirements.txt` file into your notebook environment.
-
-**📷 Screenshot Tip**:\
-✅ Screenshot the **JupyterLab interface** with the uploaded `requirements.txt` file visible in the left sidebar
-
----
-
-## 4. Install Python Packages
-
-In a new Jupyter notebook cell, run:
-
 ```python
-# Install all necessary packages listed in requirements.txt
 !pip install -r requirements.txt
 ```
 
-✅ **Note**: The `!` prefix is necessary to run shell commands within JupyterLab.
-
-**📷 Screenshot Tip**:\
-✅ Screenshot the notebook cell running `!pip install -r requirements.txt` and the successful installation output
+The `!` prefix is required to run shell commands from within a Jupyter cell.
 
 ---
 
-## 5. Deploy the Hugging Face Model to SageMaker Endpoint
+## Step 4: Deploy the Model to a SageMaker Endpoint
 
-We'll use `sagemaker` SDK to deploy the MBZUAI LaMini T5 738M model.
+The following script uses the SageMaker Python SDK to pull the [LaMini-T5-738M](https://huggingface.co/MBZUAI/LaMini-T5-738M) model from Hugging Face and deploy it to a GPU-backed endpoint.
 
 ```python
 from sagemaker.huggingface import HuggingFaceModel
 import sagemaker
 
-# Specify your execution role ARN
 role = "arn:aws:iam::YOUR_ACCOUNT_ID:role/SageMakerExecutionRole"
 
-# Initialize the SageMaker session
-sess = sagemaker.Session()
-
-# Specify the model checkpoint from Hugging Face
-hub_model_id = "MBZUAI/LaMini-T5-738M"
-
-# Configure environment variables for the model container
 hub = {
-    'HF_MODEL_ID': hub_model_id,
+    'HF_MODEL_ID': 'MBZUAI/LaMini-T5-738M',
     'HF_TASK': 'text2text-generation',
 }
 
-# Create a HuggingFaceModel object
 huggingface_model = HuggingFaceModel(
     role=role,
     transformers_version="4.37.0",
@@ -119,44 +88,40 @@ huggingface_model = HuggingFaceModel(
     env=hub
 )
 
-# Deploy the model to an endpoint
 predictor = huggingface_model.deploy(
     initial_instance_count=1,
-    instance_type="ml.g4dn.xlarge",  # GPU instance
+    instance_type="ml.g4dn.xlarge",
     endpoint_name="lamini-t5-gpu-endpoint"
 )
 ```
 
-**📷 Screenshot Tip**:\
-✅ Screenshot the notebook cell after the endpoint is successfully deployed showing the predictor output\
-✅ Screenshot the **SageMaker Console** → **Endpoints** showing the new endpoint `lamini-t5-gpu-endpoint`
+Replace `YOUR_ACCOUNT_ID` with your AWS account ID before running. Deployment typically takes 5–10 minutes. When it completes, the `predictor` object is ready to accept inference requests.
+
+**A note on instance types:** `ml.g4dn.xlarge` is the minimum GPU instance for this model size. Attempting deployment on a CPU-only instance will succeed but inference will be impractically slow.
 
 ---
 
-## 6. Finding Your Model Endpoint ARN
+## Step 5: Retrieve the Endpoint ARN
 
-- Go to **SageMaker Console** → **Endpoints**.
-- Find `lamini-t5-gpu-endpoint`.
-- **Click** on it → Copy the **Endpoint ARN** (you will need this for Lambda permissions later).
+You'll need the endpoint ARN in Part 2 to grant your Lambda function permission to invoke this endpoint.
 
-✅ **Example ARN Format**:
+Go to **SageMaker → Endpoints**, find `lamini-t5-gpu-endpoint`, click on it, and copy the ARN. It will follow this format:
 
 ```
 arn:aws:sagemaker:us-east-2:YOUR_ACCOUNT_ID:endpoint/lamini-t5-gpu-endpoint
 ```
 
-**📷 Screenshot Tip**:\
-✅ Screenshot the **Endpoint configuration page** showing the **ARN** field
+Save both the endpoint **name** and **ARN** — both are referenced in subsequent steps.
 
 ---
 
-✅ **Summary Checklist**:
+## Summary
 
-- Created IAM execution role.
-- Launched SageMaker notebook instance.
-- Added and installed requirements.txt.
-- Deployed Hugging Face model to endpoint.
-- Saved endpoint name and ARN for future use.
+At this point you have:
 
+- An IAM execution role authorizing SageMaker to access AWS resources
+- A notebook instance for running deployment and management scripts
+- A live `ml.g4dn.xlarge` endpoint serving the LaMini-T5-738M model
+- The endpoint ARN saved for IAM policy configuration in Part 2
 
-
+**Next:** [Part 2 — Setting Up a Lambda Function for Serverless Inference](/part2_lambda_setup_guide/)

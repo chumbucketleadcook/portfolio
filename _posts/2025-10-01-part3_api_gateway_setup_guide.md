@@ -4,93 +4,77 @@ title: "How to Deploy a Large Language Model from Hugging Face to AWS: Part 3 �
 date: 2025-10-01
 category: ml
 ---
-# 📌 Part 3: Creating an HTTP API in AWS API Gateway to Access Lambda (with Screenshot Guides)
 
-## 1. Create an HTTP API via API Gateway
+# Exposing Your Lambda Function as a Public HTTP Endpoint
 
-**Purpose**: The HTTP API allows you to expose the Lambda function via a public HTTP endpoint that you can call from external applications (e.g., Postman, Jupyter Notebook).
-
-### Steps:
-
-- Go to the **AWS Console** → **API Gateway** → **APIs**.
-- Click on **Create API**.
-- Choose **HTTP API** and click **Build**.
-
-🔹 **Screenshot Tip**:\
-🔹 Screenshot of the **API Gateway landing page** → **Create API**
+This is the final part of the series. In [Part 1](/part1_sagemaker_deployment_guide/) we deployed a Hugging Face LLM to SageMaker, and in [Part 2](/part2_lambda_setup_guide/) we wired a Lambda function to it. Here we'll put an HTTP API in front of that Lambda using API Gateway, giving the outside world a clean endpoint to send prompts to.
 
 ---
 
-## 2. Configure API Integration with Lambda
+## Step 1: Create an HTTP API
 
-### Steps:
+Go to **API Gateway → APIs → Create API**. When prompted to choose an API type, select **HTTP API** and click **Build**.
 
-- **Add Integration**:
-  - Integration type: **Lambda function**.
-  - Choose your Lambda function: `generate-text-lamini`.
-  - Check the box **Add permissions to Lambda function** — this allows API Gateway to invoke your Lambda automatically.
-- Click **Next**.
-
-🔹 **Screenshot Tip**:\
-🔹 Screenshot the **Add Integration** screen showing your Lambda function selected
+HTTP API is the right choice here — it's faster and cheaper than REST API, and the feature set is sufficient for a single-route inference endpoint.
 
 ---
 
-## 3. Configure Route
+## Step 2: Add the Lambda Integration
 
-### Steps:
+On the integrations screen, configure the following:
 
-- **Define Route**:
-  - Method: **POST**
-  - Resource path: `/generate`
-- Click **Next**.
+| Setting | Value |
+|---|---|
+| Integration type | Lambda function |
+| Lambda function | `generate-text-lamini` |
+| Add permissions to Lambda function | ✓ Checked |
 
-🔹 **Screenshot Tip**:\
-🔹 Screenshot the **Route configuration screen** showing `POST` and `/generate`
-
----
-
-## 4. Configure Stage
-
-### Steps:
-
-- Stage name: leave as **\$default** (or set a custom stage name if preferred).
-- Enable auto-deploy (this publishes changes automatically without extra steps).
-- Click **Next** → **Create**.
-
-🔹 **Screenshot Tip**:\
-🔹 Screenshot the **Stage configuration screen** with **\$default** and **Auto deploy** enabled
+Checking **Add permissions to Lambda function** lets API Gateway automatically configure the resource-based policy needed to invoke your Lambda — one less manual step. Click **Next**.
 
 ---
 
-## 5. Find Your Invoke URL
+## Step 3: Configure the Route
 
-### Steps:
+Define a single route for inference requests:
 
-- After creation, you will land on the **API dashboard**.
-- You’ll see the **Invoke URL** at the top.\
-  Format example:
+| Setting | Value |
+|---|---|
+| Method | POST |
+| Resource path | `/generate` |
+
+Click **Next**.
+
+---
+
+## Step 4: Configure the Stage
+
+Leave the stage name as **$default** and ensure **Auto-deploy** is enabled. Auto-deploy means any future changes to the API are published immediately without a manual deployment step.
+
+Click **Next → Create**.
+
+---
+
+## Step 5: Retrieve the Invoke URL
+
+After creation you'll land on the API dashboard. The **Invoke URL** is displayed at the top and follows this format:
 
 ```
 https://your-api-id.execute-api.us-east-2.amazonaws.com
 ```
 
-- Append `/generate` to the Invoke URL.\
-  🔹 **Final API Endpoint**:
+Append `/generate` to get your full endpoint:
 
 ```
 https://your-api-id.execute-api.us-east-2.amazonaws.com/generate
 ```
 
-🔹 **Screenshot Tip**:\
-🔹 Screenshot of the **API Invoke URL** and the **Routes tab** showing `/generate`
+Save this URL — it's the address you'll hit to run inference from any external client.
 
 ---
 
-## 6. (Optional) Test API Directly in AWS Console
+## Step 6: Test the Endpoint
 
-- Go to **API Gateway** → **APIs** → your API → **Routes** → **POST /generate** → **Test**.
-- Request Body:
+Before wiring this into anything else, verify the full pipeline end-to-end. API Gateway has a built-in test console: go to **APIs → your API → Routes → POST /generate → Test** and send the following body:
 
 ```json
 {
@@ -98,52 +82,45 @@ https://your-api-id.execute-api.us-east-2.amazonaws.com/generate
 }
 ```
 
-- Click **Test** and verify the Lambda/SageMaker pipeline works.
+A successful response confirms that API Gateway is correctly routing to Lambda, and Lambda is correctly invoking the SageMaker endpoint.
 
-🔹 **Screenshot Tip**:\
-🔹 Screenshot of the **API Gateway testing console** showing request/response
+If the test times out, double-check that your Lambda timeout is set to at least 60 seconds (covered in Part 2). If you receive a `403`, verify that the Lambda resource-based policy includes an `Allow` for `apigateway.amazonaws.com` — this should have been set automatically in Step 2, but it's worth confirming under **Lambda → Configuration → Permissions**.
 
 ---
 
-## 7. Example API Request from External Client (Python)
+## Step 7: Call the API from Python
 
-You can now interact with your model remotely using a simple Python script.
+With the endpoint live, you can query your model from any HTTP client. Here's a minimal Python example:
 
 ```python
 import requests
 
-# Replace with your actual invoke URL
 url = "https://your-api-id.execute-api.us-east-2.amazonaws.com/generate"
 
-data = {"prompt": "Write an article about deploying LLM models to AWS services"}
-
-response = requests.post(url, json=data)
-
+response = requests.post(url, json={"prompt": "Explain what a transformer model is."})
 print(response.json())
 ```
 
-🔹 **Screenshot Tip**:\
-🔹 Optional: Screenshot of API call from a Jupyter Notebook or terminal
+Replace the URL with your actual Invoke URL from Step 5. The `json=` parameter in `requests.post` handles serialization and sets the correct `Content-Type` header automatically.
 
 ---
 
-🔹 **Summary Checklist**:
+## Monitoring
 
-- ✅ Created HTTP API with Lambda integration.
-- ✅ Configured `POST /generate` route linked to Lambda.
-- ✅ Auto-deployed to `$default` stage.
-- ✅ Retrieved and validated public HTTP endpoint.
-- ✅ Tested end-to-end pipeline from API Gateway → Lambda → SageMaker Endpoint.
+Logs for both API Gateway and Lambda are written to **CloudWatch Logs** automatically. If a request succeeds at the API layer but returns an unexpected result, the Lambda log group (`/aws/lambda/generate-text-lamini`) is the first place to look.
 
 ---
 
-🔹 **Important Notes**:
+## Summary
 
-- ✅ Ensure your Lambda function’s IAM role includes `sagemaker:InvokeEndpoint` permission (covered in Part 2).
-- ✅ The **Invoke URL** is what you will use to send prompts to your model.
-- ✅ You can monitor Lambda/API logs in **CloudWatch Logs**.
+The three-part pipeline is now complete:
 
----
+```
+Client → API Gateway (POST /generate) → Lambda → SageMaker Endpoint → Model
+```
 
-🔹 **Next Step**: You are now ready to send HTTP requests to your SageMaker-powered LLM model through API Gateway!
+You have a public HTTPS endpoint that accepts a JSON prompt, routes it through a serverless Lambda function, invokes a GPU-backed SageMaker endpoint, and returns the model's response — with no persistent compute running when the API is idle.
 
+**From Part 1:** IAM execution role + SageMaker GPU endpoint serving LaMini-T5-738M  
+**From Part 2:** Lambda function with least-privilege IAM role and a 60-second timeout  
+**From Part 3:** HTTP API Gateway with auto-deploy routing `POST /generate` to Lambda
