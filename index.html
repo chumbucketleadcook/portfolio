@@ -485,7 +485,7 @@
   function filterArticles(cat, btn) {
     document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    document.querySelectorAll('.article-card').forEach(card => {
+    document.querySelectorAll('#article-grid .article-card').forEach(card => {
       card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'flex' : 'none';
     });
   }
