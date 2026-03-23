@@ -4,7 +4,7 @@ title: "CareerPulse: Building a Job Category Classifier with PySpark, Sentence T
 date: 2026-03-23
 category: projects
 ---
-# Building a Job Category Classifier with PySpark, Sentence Transformers, and MLflow
+# Creating a Production Ready Classifier in Databricks
 
 ## Overview
 

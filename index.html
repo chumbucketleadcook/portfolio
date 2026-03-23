@@ -243,21 +243,21 @@
     <!-- Featured main: most recent substantial post -->
     <div class="featured-main">
       <div>
-        <span class="article-tag tag-ml">Machine Learning</span>
+        <span class="article-tag tag-project">Projects</span>
         <h3 class="featured-main-title">
-          <a href="/llm_inference_optimization/">From Prompt to Response in Under a Second: Optimizing a Serverless LLM Inference Pipeline</a>
+          <a href="/careerpulse_category_classifier/">From Raw API Payloads to a Production-Ready Job Classifier: A PySpark and MLflow Deep Dive</a>
         </h3>
-        <p class="article-excerpt">Cold starts, payload constraints, autoscaling, and throttling — a benchmark-driven walkthrough of every optimization applied to a SageMaker + Lambda + API Gateway inference stack, with before/after numbers at each layer.</p>
+        <p class="article-excerpt">A technical walkthrough of building a job category classifier on Databricks — covering medallion architecture design decisions, text embedding comparisons, and MLflow experiment tracking</p>
       </div>
       <div class="article-meta">
         <span>Mar 2026</span><span class="meta-dot"></span><span>10 min read</span><span class="meta-dot"></span><span>MLOps Series</span>
       </div>
     </div>
     <div class="featured-sidebar">
-      <a href="/rag_langchain/" class="featured-side-item">
+      <a href="/idempotency_error_handling/" class="featured-side-item">
         <div>
-          <span class="article-tag tag-ml">Machine Learning</span>
-          <p class="side-title">Building a RAG Application with LangChain: Query Your Own Knowledge Base</p>
+          <span class="article-tag tag-data">Data Engineering</span>
+          <p class="side-title">Idempotency Error Handling: How to Create Data Pipelines Instead of Data Liabilities</p>
         </div>
         <div class="article-meta"><span>Mar 2026</span><span class="meta-dot"></span><span>9 min read</span></div>
       </a>
@@ -288,6 +288,16 @@
     <button class="filter-btn" onclick="filterArticles('general', this)">General</button>
   </div>
   <div class="card-grid" id="article-grid">
+
+    <!-- CareerPulse Category Classifier -->
+        <a href="/careerpulse-category-classifier/" class="article-card fade-in" data-cat="project">
+      <div>
+        <span class="article-tag tag-project">Projects</span>
+        <h3 class="card-title">CareerPulse: Building a Job Category Classifier with PySpark, Sentence Transformers, and MLflow</h3>
+        <p class="card-excerpt">Turning raw job posting data from the muse API into a production level category classification model in Databricks</p>
+      </div>
+      <div class="article-meta"><span>Mar 2026</span><span class="meta-dot"></span><span>10 min</span></div>
+    </a>
 
     <!-- LLM Inference Optimization -->
     <a href="/llm_inference_optimization/" class="article-card fade-in" data-cat="ml">
